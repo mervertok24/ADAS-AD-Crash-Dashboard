@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ADAS Crash Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:1rem}
+      h1{margin-top:0}
+      /* simple tab styling */
+      .tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid #ccc;margin-bottom:1rem}
+      .tabs a{padding:0.5rem 1rem;text-decoration:none;color:#333;border:1px solid transparent;border-bottom:none;cursor:pointer}
+      .tabs a.active{border:1px solid #ccc;border-bottom-color:#fff;background:#fff}
+      .tab-content>section{display:none}
+      .tab-content>section.active{display:block}
+      section h2{margin-top:0}
+    </style>
+    <script>
+      function showTab(id,el){
+        document.querySelectorAll('.tab-content>section').forEach(s=>s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.tabs a').forEach(a=>a.classList.remove('active'));
+        el.classList.add('active');
+      }
+      window.addEventListener('DOMContentLoaded',()=>document.querySelector('.tabs a').click());
+    </script>
+  </head>
+  <body>
+    <h1>ADAS Crash Dashboard</h1>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <a onclick="showTab('tab_month',this)">Month (ADS)</a>
+      <a onclick="showTab('tab_state',this)">State (ADS)</a>
+      <a onclick="showTab('tab_entity',this)">Reporting Entity (ADS)</a>
+      <a onclick="showTab('tab_calendar',this)">Calendar Heatmap (ADS)</a>
+      <a onclick="showTab('tab_damage',this)">Damage Locations (ADS)</a>
+    </nav>
+
+    <div class="tab-content">
+      <!-- Month tab -->
+      <section id="tab_month">
+        <h2>Crashes by Month</h2>
+        <div>{{ month|safe }}</div>
+
+        <h2 style="margin-top:2rem">Monthly Crashes & 3‑Month Rolling Average</h2>
+        <div>{{ combo|safe }}</div>
+      </section>
+
+      <!-- State tab -->
+      <section id="tab_state">
+        <h2>ADAS Crashes by State</h2>
+        <div>{{ state|safe }}</div>
+      </section>
+
+      <!-- Entity tab -->
+      <section id="tab_entity">
+        <h2>Reporting Entity Share</h2>
+        <div>{{ pie|safe }}</div>
+
+        <h2 style="margin-top:2rem">Crashes by State & Entity</h2>
+        <div>{{ sunburst|safe }}</div>
+      </section>
+
+      <!-- Calendar Heatmap tab -->
+      <section id="tab_calendar">
+        <h2>Crash Calendar Heatmap</h2>
+        <div>{{ calendar|safe }}</div>
+      </section>
+
+      <!-- Damage tab -->
+      <section id="tab_damage">
+        <h2>Damage Locations by State</h2>
+        <div>{{ stacked|safe }}</div>
+      </section>
+    </div>
+  </body>
+</html>
